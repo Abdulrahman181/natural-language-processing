@@ -4,7 +4,7 @@ Natural-language processing and text analytics projects.
 
 ## Projects
 
-- [`detecting-fake-news`](./projects/detecting-fake-news/) — [original repository](https://github.com/Abdulrahman181/detecting-fake-news)
+- [`detecting-fake-news`](./projects/detecting-fake-news/) — [original repository](./projects/detecting-fake-news/)
 
 ## Engineering standard
 
