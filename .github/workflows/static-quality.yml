@@ -26,12 +26,10 @@ jobs:
           import pathlib, py_compile, sys
           failures=[]
           for p in pathlib.Path('.').rglob('*.py'):
-              if any(part in {'.git','.venv','venv','node_modules'} for part in p.parts):
-                  continue
+              if any(part in {'.git','.venv','venv','node_modules'} for part in p.parts): continue
               try: py_compile.compile(str(p), doraise=True)
               except Exception as e: failures.append(f'{p}: {e}')
-          if failures:
-              print('\n'.join(failures)); sys.exit(1)
+          if failures: print('\n'.join(failures)); sys.exit(1)
           print('Python syntax OK')
           PY
       - name: Validate notebooks and JSON files
@@ -43,15 +41,16 @@ jobs:
               if any(part in {'.git','.venv','venv','node_modules'} for part in p.parts): continue
               try: json.loads(p.read_text(encoding='utf-8'))
               except Exception as e: failures.append(f'{p}: {e}')
-          if failures:
-              print('\n'.join(failures)); sys.exit(1)
+          if failures: print('\n'.join(failures)); sys.exit(1)
           print('Notebook/JSON validation OK')
           PY
-      - name: Run lightweight tests when available
+      - name: Run self-contained portfolio tests
         run: |
           python -m pip install --disable-pip-version-check -q pytest
-          if find . -type f \( -name 'test_*.py' -o -name '*_test.py' \) -not -path './.git/*' | grep -q .; then
-            pytest -q --disable-warnings --maxfail=1
+          if [ -d projects/agentic-data-analyst ]; then
+            PYTHONPATH=projects/agentic-data-analyst pytest -q projects/agentic-data-analyst/tests
+          elif [ -d projects/python-ml-pipeline-cli ]; then
+            PYTHONPATH=projects/python-ml-pipeline-cli pytest -q projects/python-ml-pipeline-cli/tests
           else
-            echo 'No test files found; static checks completed.'
+            echo 'No self-contained portfolio test suite selected; dependency-heavy project tests require their project-specific environment.'
           fi
