@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+.venv/
+.env
+
+# Experiment outputs and model artifacts
+work/
+work_dry/
+results/
+results_dry/
+outputs/
+outputs_dry/
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.pth
+cwe_qlora_results.zip
+
+# Local caches
+.cache/
+hf_cache/
