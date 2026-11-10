@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cwe-qlora"
-version = "0.2.0"
+version = "0.3.0"
 description = "Reproducible CVE-to-CWE QLoRA evaluation pipeline"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -21,7 +21,18 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-test = ["pytest>=7.4,<9"]
+test = [
+  "pytest>=7.4,<9",
+  "pytest-cov>=4,<7",
+]
+quality = [
+  "ruff>=0.8,<1",
+  "bandit>=1.7,<2",
+]
+serve = [
+  "fastapi>=0.110,<1",
+  "uvicorn[standard]>=0.29,<1",
+]
 
 [project.scripts]
 cwe-qlora = "cwe_qlora.cli:main"
@@ -33,3 +44,27 @@ include = ["cwe_qlora*"]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-ra"
+
+[tool.coverage.run]
+branch = true
+source = ["cwe_qlora"]
+omit = ["cwe_qlora/train.py", "cwe_qlora/predict.py", "cwe_qlora/api.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+exclude = ["notebooks"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B905"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "notebooks"]

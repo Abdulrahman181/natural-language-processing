@@ -54,3 +54,17 @@ jobs:
           else
             echo 'No self-contained portfolio test suite selected; dependency-heavy project tests require their project-specific environment.'
           fi
+      - name: Install cwe-qlora CPU test dependencies
+        run: |
+          python -m pip install --disable-pip-version-check -q \
+            'numpy<3' 'scikit-learn<2' 'pytest>=7.4,<9' 'pytest-cov>=4,<7' \
+            'ruff>=0.8,<1' 'bandit>=1.7,<2'
+      - name: Check cwe-qlora formatting and security
+        working-directory: projects/cwe-qlora
+        run: |
+          ruff check .
+          bandit -q -r cwe_qlora -c pyproject.toml
+      - name: Run cwe-qlora test suite with coverage
+        working-directory: projects/cwe-qlora
+        run: |
+          pytest -q --cov=cwe_qlora --cov-report=term-missing --cov-fail-under=70

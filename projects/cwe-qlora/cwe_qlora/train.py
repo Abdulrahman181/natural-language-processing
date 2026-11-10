@@ -3,7 +3,7 @@ from pathlib import Path
 
 from .compat import make_trainer, make_training_args, pick_optimizer, prepare_for_kbit
 from .io_utils import read_json, read_jsonl, write_json
-from .modeling import DEFAULT_MODEL, environment_info, load_base_model, resolve_dtype
+from .modeling import DEFAULT_MODEL, environment_info, load_base_model, resolve_dtype, resolve_model_revision
 from .tokenization import PadCollator, check_label_roundtrip, encode_dataset
 
 DEFAULT_TARGET_MODULES = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
@@ -12,6 +12,7 @@ DEFAULT_TARGET_MODULES = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "
 def add_arguments(parser) -> None:
     parser.add_argument("--work", default="work")
     parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--model-revision", default=None, help="Hub commit SHA; resolved automatically when omitted.")
     parser.add_argument("--output", default="outputs/adapter")
     parser.add_argument("--max-length", type=int, default=512)
     parser.add_argument("--epochs", type=float, default=1.0)
@@ -58,7 +59,8 @@ def run(args) -> int:
     work = Path(args.work)
     adapter_dir = Path(args.output)
     checkpoint_dir = adapter_dir.parent / "checkpoints"
-    tokenizer = AutoTokenizer.from_pretrained(args.model)
+    model_revision = resolve_model_revision(args.model, args.model_revision)
+    tokenizer = AutoTokenizer.from_pretrained(args.model, revision=model_revision)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
     train_rows = read_jsonl(work / "train.jsonl")
@@ -71,7 +73,7 @@ def run(args) -> int:
 
     quantize = not args.no_quant
     dtype = resolve_dtype(torch, args.dtype)
-    model = load_base_model(args.model, quantize, dtype)
+    model = load_base_model(args.model, quantize, dtype, revision=model_revision)
     model.config.use_cache = False
     if quantize:
         model = prepare_for_kbit(model)
@@ -143,6 +145,7 @@ def run(args) -> int:
         work / "train_run.json",
         {
             "model": args.model,
+            "model_revision": model_revision,
             "train_examples": len(train_examples),
             "validation_examples": len(val_examples),
             "dropped_train_too_long": dropped_train,

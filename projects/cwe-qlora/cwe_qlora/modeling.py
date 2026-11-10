@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from .compat import load_pretrained_causal_lm
 
 DEFAULT_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
@@ -12,7 +14,24 @@ def resolve_dtype(torch, preference: str = "auto"):
     return getattr(torch, preference)
 
 
-def load_base_model(name: str, quantize: bool, dtype):
+def resolve_model_revision(name: str, requested: str | None = None) -> str | None:
+    """Resolve a Hub model to an immutable commit while preserving local model paths."""
+    if Path(name).exists():
+        return requested
+    if requested:
+        return requested
+    try:
+        from huggingface_hub import HfApi
+
+        return HfApi().model_info(name).sha
+    except Exception as exc:
+        raise RuntimeError(
+            f"Could not resolve an immutable revision for Hub model {name!r}. "
+            "Pass --model-revision with a commit SHA or check network access."
+        ) from exc
+
+
+def load_base_model(name: str, quantize: bool, dtype, revision: str | None = None):
     import torch
 
     kwargs = {}
@@ -28,7 +47,7 @@ def load_base_model(name: str, quantize: bool, dtype):
             bnb_4bit_compute_dtype=dtype,
         )
         kwargs["device_map"] = {"": 0}
-    model = load_pretrained_causal_lm(name, dtype, **kwargs)
+    model = load_pretrained_causal_lm(name, dtype, revision=revision, **kwargs)
     if not quantize and torch.cuda.is_available():
         model = model.to("cuda")
     return model

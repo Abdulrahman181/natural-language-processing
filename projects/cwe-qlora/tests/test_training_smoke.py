@@ -7,16 +7,15 @@ pytest.importorskip("transformers")
 pytest.importorskip("peft")
 pytest.importorskip("tokenizers")
 
-from tokenizers import Tokenizer, decoders, models, pre_tokenizers, trainers
-from transformers import PreTrainedTokenizerFast, Qwen2Config, Qwen2ForCausalLM
+from helpers import make_rows, write_local_dataset  # noqa: E402
+from tokenizers import Tokenizer, decoders, models, pre_tokenizers, trainers  # noqa: E402
+from transformers import PreTrainedTokenizerFast, Qwen2Config, Qwen2ForCausalLM  # noqa: E402
 
-from cwe_qlora.cli import main
-from cwe_qlora.compat import make_training_args, pick_optimizer
-from cwe_qlora.io_utils import read_json, read_jsonl
-from cwe_qlora.prompts import SYSTEM_PROMPT
-from cwe_qlora.tokenization import PadCollator, encode_dataset, encode_training_example, render_prompt
-
-from helpers import make_rows, write_local_dataset
+from cwe_qlora.cli import main  # noqa: E402
+from cwe_qlora.compat import make_training_args, pick_optimizer  # noqa: E402
+from cwe_qlora.io_utils import read_json, read_jsonl  # noqa: E402
+from cwe_qlora.prompts import SYSTEM_PROMPT  # noqa: E402
+from cwe_qlora.tokenization import PadCollator, encode_dataset, encode_training_example, render_prompt  # noqa: E402
 
 SPECIAL_TOKENS = ["<|endoftext|>", "<|im_start|>", "<|im_end|>"]
 CHAT_TEMPLATE = (

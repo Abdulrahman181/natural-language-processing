@@ -1,8 +1,10 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.coverage
 *.egg-info/
 .venv/
+.quality-venv/
 .env
 
 # Experiment outputs and model artifacts
