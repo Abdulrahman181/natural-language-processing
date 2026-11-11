@@ -68,3 +68,26 @@ jobs:
         working-directory: projects/cwe-qlora
         run: |
           pytest -q --cov=cwe_qlora --cov-report=term-missing --cov-fail-under=70
+  rag-eval-quality:
+    name: rag-eval-quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install rag-eval quality dependencies
+        working-directory: projects/rag-eval
+        run: |
+          python -m pip install --disable-pip-version-check -q -e '.[test,quality,serve]'
+      - name: Check rag-eval formatting and security
+        working-directory: projects/rag-eval
+        run: |
+          ruff check rageval tests
+          bandit -q -r rageval -c pyproject.toml
+      - name: Run rag-eval test suite with coverage
+        working-directory: projects/rag-eval
+        run: |
+          pytest -q --cov=rageval --cov-report=term-missing --cov-fail-under=70
