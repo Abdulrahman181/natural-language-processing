@@ -15,9 +15,9 @@ dependencies = [
 
 [project.optional-dependencies]
 embeddings = ["sentence-transformers>=2.7,<6"]
-test = ["pytest>=7.4,<9", "pytest-cov>=4,<7"]
+test = ["pytest>=7.4,<9", "pytest-cov>=4,<7", "httpx2>=2,<3"]
 quality = ["ruff>=0.8,<1", "bandit>=1.7,<2"]
-serve = ["fastapi>=0.110,<1", "uvicorn[standard]>=0.29,<1"]
+serve = ["fastapi>=0.110,<1", "uvicorn[standard]>=0.29,<1", "httpx2>=2,<3"]
 all = ["rag-eval[embeddings,test,quality,serve]"]
 
 [project.scripts]
