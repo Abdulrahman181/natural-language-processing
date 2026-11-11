@@ -51,10 +51,10 @@ def prepare_for_kbit(model):
         return prepare_model_for_kbit_training(model, use_gradient_checkpointing=True)
 
 
-def load_pretrained_causal_lm(name: str, dtype, **kwargs):
+def load_pretrained_causal_lm(name: str, dtype, revision: str | None = None, **kwargs):
     from transformers import AutoModelForCausalLM
 
     try:
-        return AutoModelForCausalLM.from_pretrained(name, dtype=dtype, **kwargs)
+        return AutoModelForCausalLM.from_pretrained(name, dtype=dtype, revision=revision, **kwargs)
     except TypeError:
-        return AutoModelForCausalLM.from_pretrained(name, torch_dtype=dtype, **kwargs)
+        return AutoModelForCausalLM.from_pretrained(name, torch_dtype=dtype, revision=revision, **kwargs)

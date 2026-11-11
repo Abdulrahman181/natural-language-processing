@@ -1,4 +1,5 @@
 import pytest
+from helpers import make_rows
 
 from cwe_qlora.data import (
     canonical_rows,
@@ -11,8 +12,6 @@ from cwe_qlora.data import (
 from cwe_qlora.io_utils import read_jsonl, write_jsonl
 from cwe_qlora.parsing import INVALID, canonical, parse_prediction
 from cwe_qlora.prompts import SYSTEM_PROMPT, build_messages, clean_description
-
-from helpers import make_rows
 
 
 @pytest.mark.parametrize(

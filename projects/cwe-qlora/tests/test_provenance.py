@@ -1,10 +1,11 @@
 import pytest
+from helpers import write_local_dataset
 
 from cwe_qlora.cli import main
-from cwe_qlora.io_utils import read_jsonl, write_jsonl
 from cwe_qlora.data import data_fingerprint
+from cwe_qlora.io_utils import read_jsonl, write_jsonl
+from cwe_qlora.modeling import resolve_model_revision
 from cwe_qlora.report import build_report
-from helpers import write_local_dataset
 
 
 def _prepare(tmp_path, mode):
@@ -43,6 +44,11 @@ def test_data_fingerprint_is_order_independent_but_content_sensitive():
     assert data_fingerprint(rows) == data_fingerprint(reordered)
     changed = {"train": [{"id": "1", "description": "b", "label": "CWE-1"}]}
     assert data_fingerprint(rows) != data_fingerprint(changed)
+
+
+def test_local_model_revision_does_not_require_hub_access(tmp_path):
+    assert resolve_model_revision(str(tmp_path)) is None
+    assert resolve_model_revision(str(tmp_path), "local-test-revision") == "local-test-revision"
 
 
 def test_report_rejects_duplicate_prediction_ids(tmp_path):

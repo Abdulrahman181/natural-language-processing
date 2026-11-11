@@ -38,6 +38,13 @@ python -m cwe_qlora predict --work work --out-dir results --adapter outputs/adap
 python -m cwe_qlora report --work work --out results
 ```
 
+For a Hub model, the pipeline resolves the model name to an immutable commit SHA before loading it. You can provide one explicitly when reproducing a published run:
+
+```
+python -m cwe_qlora train --work work --model-revision <model-commit-sha> --output outputs/adapter
+python -m cwe_qlora predict --work work --model-revision <model-commit-sha> --out-dir results
+```
+
 For a diagnostic-only local run, mark the prepared artifacts explicitly:
 
 ```
@@ -49,6 +56,21 @@ python -m cwe_qlora prepare --out work_dry --run-mode dry-run --train-size 200 -
 Defaults: 12,000 training rows, 500 validation, 2,000 test, seed 13, 1 epoch, effective batch 32, learning rate 2e-4 with cosine schedule, LoRA r=16 / alpha=32 / dropout 0.05 on q,k,v,o,gate,up,down projections, max length 512.
 
 Interrupted training can continue with `--resume`.
+
+## Serving
+
+The reusable `CWEInferenceEngine` is shared by the CLI and the optional FastAPI service. Install the serving extras and start the API locally with:
+
+```
+python -m pip install -e '.[serve]'
+python -m cwe_qlora.api
+```
+
+The service exposes `/healthz`, `/readyz`, `/v1/metadata`, `/v1/predict`, and `/v1/predict:batch`. It lazy-loads the model, validates request sizes, uses deterministic decoding, and returns `503` when the inference backend is unavailable. A non-root Docker image is included; set `CWE_QLORA_HOST=0.0.0.0` only in a container or trusted network boundary.
+
+## Engineering checks
+
+The repository CI runs Python syntax and notebook validation, Ruff linting, Bandit security scanning, the CPU test suite, and a coverage gate. The current local verification passes 45 tests, Bandit, Ruff, and a 74% coverage threshold. The optional deep-learning integration tests remain skipped unless PyTorch, Transformers, PEFT, and Tokenizers are installed.
 
 ## Files to send back
 
@@ -72,7 +94,7 @@ Model weights are not needed.
 
 ## What was and was not verified before shipping
 
-The CPU test suite covers prompt and label masking, tokenizer round-trip guard, data preparation and leakage checks, metrics, baselines, report generation, dry-run provenance enforcement, duplicate/unexpected prediction detection, data fingerprinting, and the complete prepare/train/predict/report path when the optional deep-learning dependencies are available. In the current sandbox verification, `pytest -q` passed 45 tests and skipped the optional training integration module because PyTorch/Transformers/PEFT were not installed in the isolated CPU environment.
+The CPU test suite covers prompt and label masking, tokenizer round-trip guard, data preparation and leakage checks, metrics, baselines, report generation, dry-run provenance enforcement, duplicate/unexpected prediction detection, data fingerprinting, and the complete prepare/train/predict/report path when the optional deep-learning dependencies are available. In the current verification, `pytest -q` passed 45 tests and skipped the optional training integration module because PyTorch/Transformers/PEFT were not installed in the isolated CPU environment.
 
 Not verified here: 4-bit bitsandbytes loading, fp16 mixed precision on a T4, real-model memory use and speed, and the actual dataset download. The Colab dry run exists to expose any of these quickly; no performance number from it is valid for publication.
 

@@ -1,6 +1,5 @@
-import json
 import hashlib
-import random
+import json
 from collections import Counter
 from pathlib import Path
 
@@ -26,17 +25,19 @@ def canonical_rows(rows, id_key="cve_id", text_key="description", label_key="cwe
 
 
 def sample_rows(rows: list[dict], n: int, seed: int) -> list[dict]:
-    rng = random.Random(seed)
+    import numpy as np
+
+    rng = np.random.default_rng(seed)
     if n >= len(rows):
-        shuffled = list(rows)
-        rng.shuffle(shuffled)
-        return shuffled
-    return rng.sample(rows, n)
+        return [rows[index] for index in rng.permutation(len(rows))]
+    return [rows[index] for index in rng.choice(len(rows), size=n, replace=False)]
 
 
 def cap_per_class(rows: list[dict], cap: int, seed: int) -> list[dict]:
-    rng = random.Random(seed)
-    shuffled = list(rows)
+    import numpy as np
+
+    rng = np.random.default_rng(seed)
+    shuffled = [rows[index] for index in rng.permutation(len(rows))]
     rng.shuffle(shuffled)
     counts: Counter = Counter()
     kept = []

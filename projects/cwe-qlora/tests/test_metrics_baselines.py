@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from helpers import make_rows
 
 from cwe_qlora.baselines import fit_tfidf_svm, majority_label
 from cwe_qlora.metrics import (
@@ -15,8 +16,6 @@ from cwe_qlora.metrics import (
 )
 from cwe_qlora.parsing import INVALID
 from cwe_qlora.similarity import max_train_similarity, near_duplicate_mask
-
-from helpers import make_rows
 
 
 def test_accuracy_and_invalid_rate():
@@ -89,7 +88,7 @@ def test_max_similarity_flags_duplicates_and_not_unrelated_text():
 
 def test_max_similarity_is_chunk_size_independent():
     train = [f"vendor{n} product{n} flaw{n} component{n % 7} issue" for n in range(40)]
-    queries = [train[3], train[17] + " extra{n}".format(n=1), "unrelated words entirely"]
+    queries = [train[3], train[17] + f" extra{1}", "unrelated words entirely"]
     assert np.allclose(max_train_similarity(queries, train, chunk=1), max_train_similarity(queries, train, chunk=100))
 
 
