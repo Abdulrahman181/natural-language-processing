@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+*.egg-info/
+.venv/
+.env
+
+# Generated data and artifacts
+artifacts/
+results/
+data/corpus.jsonl
+data/questions.csv
+data/txt/
+*.npy
+*.zip

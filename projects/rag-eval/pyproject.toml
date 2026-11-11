@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rag-eval"
+version = "0.2.0"
+description = "Reproducible retrieval evaluation for Arabic RAG systems"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "numpy>=1.24,<3",
+  "requests>=2.31,<3",
+]
+
+[project.optional-dependencies]
+embeddings = ["sentence-transformers>=2.7,<6"]
+test = ["pytest>=7.4,<9", "pytest-cov>=4,<7"]
+quality = ["ruff>=0.8,<1", "bandit>=1.7,<2"]
+serve = ["fastapi>=0.110,<1", "uvicorn[standard]>=0.29,<1"]
+all = ["rag-eval[embeddings,test,quality,serve]"]
+
+[project.scripts]
+rageval = "rageval.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["rageval*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+
+[tool.coverage.run]
+branch = true
+source = ["rageval"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+exclude = ["data", "artifacts", "results"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B905"]
+
+[tool.bandit]
+exclude_dirs = ["tests", "data", "artifacts", "results"]
