@@ -1,0 +1,46 @@
+{
+  "source": "data/Hotel Arabic-Reviews Dataset.txt",
+  "output": "data/processed/hotel_reviews_processed.csv",
+  "source_rows": 409562,
+  "output_rows": 409562,
+  "original_columns": [
+    "no",
+    "Hotel name",
+    "rating",
+    "user type",
+    "room type",
+    "nights",
+    "review"
+  ],
+  "added_columns": [
+    "original_no",
+    "original_Hotel_name",
+    "original_rating",
+    "original_user_type",
+    "original_room_type",
+    "original_nights",
+    "original_review",
+    "Hotel_name_clean",
+    "user_type_clean",
+    "room_type_clean",
+    "nights_clean",
+    "review_clean",
+    "rating_num",
+    "rating_valid",
+    "sentiment",
+    "nights_num",
+    "nights_missing",
+    "flag_review_empty",
+    "flag_review_too_short",
+    "flag_review_has_latin",
+    "flag_user_type_suspect",
+    "flag_missing_metadata",
+    "flag_duplicate_review"
+  ],
+  "policy": "non-destructive derived dataset; original columns preserved with original_ prefix",
+  "sentiment_mapping": {
+    "1-2": "negative",
+    "3": "neutral",
+    "4-5": "positive"
+  }
+}

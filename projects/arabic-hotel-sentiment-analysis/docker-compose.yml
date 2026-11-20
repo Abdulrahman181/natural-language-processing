@@ -1,0 +1,10 @@
+services:
+  sentiment-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      MODEL_PATH: artifacts/tfidf_svm.joblib
+      MODEL_VERSION: tfidf-svm-v1
+      LOG_LEVEL: INFO
+    restart: unless-stopped
