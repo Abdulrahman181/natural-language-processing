@@ -1,0 +1,8 @@
+column,empty,dash,placeholder_total,tokens
+no,0,0,0,{}
+Hotel name,0,0,0,{}
+rating,0,0,0,{}
+user type,0,50431,50431,{'-': 50431}
+room type,0,119024,119024,{'-': 119024}
+nights,0,2517,2517,{'-': 2517}
+review,0,0,0,{}

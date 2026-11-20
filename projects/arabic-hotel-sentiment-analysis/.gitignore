@@ -1,0 +1,25 @@
+# Python environments and caches
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Runtime and local secrets
+.env
+*.log
+
+# Generated Transformer checkpoints and local smoke outputs
+artifacts/arabert_full/
+artifacts/arabert_full_final/
+artifacts/checkpoint-*/
+
+# Large source/derived datasets are distributed through the private release asset.
+# GitHub's regular Git objects have a 100 MB per-file limit.
+data/Hotel Arabic-Reviews Dataset.txt
+data/processed/hotel_reviews_processed.csv
+data/processed/hotel_reviews_model_ready.csv
+data/processed/hotel_reviews_quarantine.csv
+
+# Bundled archives are release assets, not Git blobs
+*.zip
