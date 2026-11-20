@@ -1,0 +1,9 @@
+{
+  "model": "TF-IDF + Linear SVM",
+  "training_rows": 397993,
+  "labels": [
+    "negative",
+    "neutral",
+    "positive"
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "source": "/home/ubuntu/work_sentiment/sentiment_analysis_submission/data/Hotel Arabic-Reviews Dataset.txt",
+  "sha256": "fc3bb8210d4f8a658b77c92fe659e532173432679992d5ae1e6c91969681748b",
+  "encoding": "UTF-16LE with BOM",
+  "delimiter": "TAB",
+  "records": 409562,
+  "columns": [
+    "no",
+    "Hotel name",
+    "rating",
+    "user type",
+    "room type",
+    "nights",
+    "review"
+  ],
+  "malformed_rows": 0,
+  "duplicate_full_rows": 0,
+  "repeated_review_groups": 2693,
+  "extra_duplicate_review_occurrences": 9461,
+  "invalid_or_missing_ratings": 0,
+  "ratings_outside_1_to_5": 0,
+  "user_type_room_like_values": 72,
+  "missingness": [
+    {
+      "column": "no",
+      "empty": 0,
+      "dash": 0,
+      "placeholder_total": 0,
+      "tokens": {}
+    },
+    {
+      "column": "Hotel name",
+      "empty": 0,
+      "dash": 0,
+      "placeholder_total": 0,
+      "tokens": {}
+    },
+    {
+      "column": "rating",
+      "empty": 0,
+      "dash": 0,
+      "placeholder_total": 0,
+      "tokens": {}
+    },
+    {
+      "column": "user type",
+      "empty": 0,
+      "dash": 50431,
+      "placeholder_total": 50431,
+      "tokens": {
+        "-": 50431
+      }
+    },
+    {
+      "column": "room type",
+      "empty": 0,
+      "dash": 119024,
+      "placeholder_total": 119024,
+      "tokens": {
+        "-": 119024
+      }
+    },
+    {
+      "column": "nights",
+      "empty": 0,
+      "dash": 2517,
+      "placeholder_total": 2517,
+      "tokens": {
+        "-": 2517
+      }
+    },
+    {
+      "column": "review",
+      "empty": 0,
+      "dash": 0,
+      "placeholder_total": 0,
+      "tokens": {}
+    }
+  ],
+  "whitespace": [
+    {
+      "column": "Hotel name",
+      "leading_or_trailing": 0,
+      "repeated_spaces": 288,
+      "embedded_newline": 0
+    },
+    {
+      "column": "user type",
+      "leading_or_trailing": 0,
+      "repeated_spaces": 0,
+      "embedded_newline": 0
+    },
+    {
+      "column": "room type",
+      "leading_or_trailing": 0,
+      "repeated_spaces": 3,
+      "embedded_newline": 0
+    },
+    {
+      "column": "nights",
+      "leading_or_trailing": 0,
+      "repeated_spaces": 0,
+      "embedded_newline": 0
+    },
+    {
+      "column": "review",
+      "leading_or_trailing": 61794,
+      "repeated_spaces": 33739,
+      "embedded_newline": 0
+    }
+  ],
+  "review_length": {
+    "count": 409562.0,
+    "mean": 125.32567962848115,
+    "std": 121.47874940022095,
+    "min": 5.0,
+    "25%": 51.0,
+    "50%": 89.0,
+    "75%": 157.0,
+    "max": 3669.0
+  },
+  "script_indicators": {
+    "arabic_chars": 40706702,
+    "latin_chars": 255165,
+    "digits": 144420,
+    "question_exclamation": 29472,
+    "urls": 3
+  }
+}

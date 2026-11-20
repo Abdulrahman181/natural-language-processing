@@ -1,0 +1,13 @@
+{
+  "input_rows": 409562,
+  "model_ready_rows": 397993,
+  "quarantine_rows": 11569,
+  "excluded_by_reason": {
+    "duplicate_normalized_review": 11529,
+    "empty_after_normalization": 32,
+    "too_short_after_normalization": 8
+  },
+  "corrected_room_like_user_values": 72,
+  "duplicate_normalized_reviews_removed": 11529,
+  "policy": "source unchanged; full processed file retained; model-ready is a derived filtered view"
+}
